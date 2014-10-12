@@ -10,7 +10,8 @@ public class SimConstant {
 	public final static float TOTAL_ENERGY_W = (float)1.740e17;
 	public final static float SOLAR_CONSTANT_Wpm2 = (float)1.366e3;
 	public final static float K_JpK = (float)1.38e-23;
-	
+	public final static float SOLAR_CONSTANT = (float)1.366e3;
+    public final static float K = (float)1.38e-23;
 	public final static boolean DEBUG = false;
 	
 	public static boolean TESTING = false;

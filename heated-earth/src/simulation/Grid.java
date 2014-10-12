@@ -38,7 +38,10 @@ public class Grid implements TemperatureGrid{
         public void initialize(int degSpacing, float temp_K)
         {
                 gs_deg = degSpacing;
+                //The number of rows in the grid:360/2
                 cols = SimConstant.MAX_GRID_WIDTH / degSpacing;
+                
+                //The number of rows in the grid:180/2
                 rows = cols / 2;
                 
                 curCol = 0;
