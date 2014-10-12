@@ -2,10 +2,9 @@ package EarthSim;
 
 import presentation.Gui;
 import userControl.CommunicationConfig;
-import userControl.SimOptions;
+import userControl.SimulationOptions;
 import userControl.ThreadConfig;
 import userControl.UserControl;
-import userControl.CommunicationConfig;
 public class Demo {
 	
         public static void main(String[] args) {
@@ -19,7 +18,7 @@ public class Demo {
         
         public static boolean parseCommandLineArguments(String[] arguments) 
         {
-                SimOptions options = SimOptions.getInstance();
+                SimulationOptions options = SimulationOptions.getInstance();
                 
                 boolean simulationThread = false;
                 boolean presentationThread = false;

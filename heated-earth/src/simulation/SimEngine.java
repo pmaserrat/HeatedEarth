@@ -3,7 +3,7 @@ package simulation;
 import java.util.Calendar;
 
 import userControl.CommunicationConfig;
-import userControl.SimOptions;
+import userControl.SimulationOptions;
 import presentation.Presentation;
 import sync.StatusBuffer;
 
@@ -22,7 +22,7 @@ public class SimEngine implements Runnable {
 	private int steps = 0;
 	private int simulationRate;
 	private SimKernel simKernel;
-	private SimOptions simOption;
+	private SimulationOptions simOption;
 
 	private static boolean hold = false;
 
@@ -67,7 +67,7 @@ public class SimEngine implements Runnable {
 		simulationTime = 0;
 		rotationAngle_deg = 0;
 		simKernel = new SimKernel();
-		simOption = SimOptions.getInstance();
+		simOption = SimulationOptions.getInstance();
 		simulationRate = simOption.getSimulationRate();
 		grid = new Grid(simOption.getGridSpacing(), SimConstant.AVERAGE_TEMP_K);
 		gridTmp = new Grid(simOption.getGridSpacing(),

@@ -5,7 +5,7 @@ import simulation.SimEngine;
 import simulation.SimStatus;
 import sync.StatusBuffer;
 import userControl.CommunicationConfig;
-import userControl.SimOptions;
+import userControl.SimulationOptions;
 
 public class Presentation implements Runnable {
 
@@ -54,7 +54,7 @@ public class Presentation implements Runnable {
                                 // Get the number of sim steps between this one and the last one?
                                 // We only keep the simulation  status if we're supposed to based on the
                                 // simulation rate
-                                if (simStatus.getSimStep() - this.simStatus.getSimStep() >= SimOptions.getInstance().getVisualizationRate()) {
+                                if (simStatus.getSimStep() - this.simStatus.getSimStep() >= SimulationOptions.getInstance().getVisualizationRate()) {
                                         this.simStatus = simStatus;
                                         
                                         pushStatusToGui();
@@ -65,7 +65,7 @@ public class Presentation implements Runnable {
 
         public boolean updateSimData() {
                 SimStatus status = null; // lazy initialization...
-                SimOptions opts = SimOptions.getInstance();
+                SimulationOptions opts = SimulationOptions.getInstance();
                 
                 // We're going to get the data via two separate methods... PULL and PULL + BUFFER
                 // The difference is where we get the data from.  Check the Sim Options to see
@@ -120,7 +120,7 @@ public class Presentation implements Runnable {
                         System.out.println("Enterring Presentation Thread!");
                 }
                 
-                SimOptions opts = SimOptions.getInstance();
+                SimulationOptions opts = SimulationOptions.getInstance();
                 
                 boolean isFinished = false;
                 while (!kill && !isFinished) {
@@ -129,7 +129,7 @@ public class Presentation implements Runnable {
                                         // Update our simStatus data
                                         isFinished = !updateSimData();
                                         
-                                        Thread.sleep(opts.getVisualizationDelay_ms());
+                                        Thread.sleep(opts.getVisualizationDelayMilliSeconds());
                                 } catch (InterruptedException e) {
                                         e.printStackTrace();
                                 }
