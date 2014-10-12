@@ -4,6 +4,7 @@ import simulation.SimConstant;
 import simulation.SimEngine;
 import simulation.SimStatus;
 import sync.StatusBuffer;
+import userControl.CommunicationConfig;
 import userControl.SimOptions;
 
 public class Presentation implements Runnable {
@@ -69,18 +70,18 @@ public class Presentation implements Runnable {
                 // We're going to get the data via two separate methods... PULL and PULL + BUFFER
                 // The difference is where we get the data from.  Check the Sim Options to see
                 // which it should be.
-                SimOptions.COMM_CONFIG config = opts.getCommConfig();
-                if (config == SimOptions.COMM_CONFIG.PULL) {
+               CommunicationConfig config = opts.getCommConfig();
+                if (config == CommunicationConfig.PULL) {
                         // Check the simulation controller to see if we have data available
                         status = SimEngine.getInstance().getStatus();
                         setStatus(status);
                 }
-                else if (config == SimOptions.COMM_CONFIG.BUFFER) {
+                else if (config == CommunicationConfig.BUFFER) {
                         // Check the SimStatus buff to see if we have data available
                         status = StatusBuffer.getInstance().pullStatus();
                         setStatus(status);
                 }
-                else if (config == SimOptions.COMM_CONFIG.PUSH) {
+                else if (config == CommunicationConfig.PUSH) {
                         // Do nothing... sleep a sec to save processor resources...
                         try {
                                 Thread.sleep(1000);

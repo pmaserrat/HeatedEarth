@@ -1,106 +1,103 @@
 package EarthSim;
 
 import presentation.Gui;
+import userControl.CommunicationConfig;
 import userControl.SimOptions;
+import userControl.ThreadConfig;
 import userControl.UserControl;
-
+import userControl.CommunicationConfig;
 public class Demo {
-
-        /**
-         * Main entry function for the application
-         */
+	
         public static void main(String[] args) {
                 
-                // Parse the command line arguments and setup the sim options
-                if(parseCommandLine(args)) {
-                        // Create the instance of the GUI
+                if(parseCommandLineArguments(args)) 
+                {
                         Gui.getInstance();
                         new UserControl();
                 }
         }
         
-        public static boolean parseCommandLine(String[] args) {
-                // Get the sim options
-                SimOptions opts = SimOptions.getInstance();
+        public static boolean parseCommandLineArguments(String[] arguments) 
+        {
+                SimOptions options = SimOptions.getInstance();
                 
-                // Set default options
-                boolean bSimThread = false;
-                boolean bPresThread = false;
-                boolean bCommConfigSet = false;
-                SimOptions.COMM_CONFIG commConfig = SimOptions.COMM_CONFIG.PUSH;
+                boolean simulationThread = false;
+                boolean presentationThread = false;
+                boolean commConfigSet = false;
                 
-                // Parse the command line options
+                CommunicationConfig commConfig = CommunicationConfig.PUSH;
+                
                 boolean contProg = true;
                 
-                for (int nArg = 0; nArg < args.length; nArg++) {
+                for (int i = 0; i < arguments.length; i++) 
+                	{
 
-                        // Parse THREAD_CONFIG
-                        if (args[nArg].equalsIgnoreCase("-s")) {
-                                bSimThread = true;
+                        if (arguments[i].equalsIgnoreCase("-s")) 
+                        {
+                                simulationThread = true;
                         }                       
-                        else if (args[nArg].equalsIgnoreCase("-p")) {
-                                bPresThread = true;
+                        else if (arguments[i].equalsIgnoreCase("-p")) 
+                        {
+                                presentationThread = true;
                         }
-                        // Parse COMM_CONFIG
-                        else if (args[nArg].equalsIgnoreCase("-t")) {
-                                if(!bCommConfigSet) {
-                                        commConfig = SimOptions.COMM_CONFIG.PUSH;
-                                        bCommConfigSet = true;
+                        else if (arguments[i].equalsIgnoreCase("-t")) 
+                        {
+                                if(!commConfigSet) {
+                                        commConfig = CommunicationConfig.PUSH;
+                                        commConfigSet = true;
                                 }
                                 else {
                                         contProg = false;
                                 }
                         }
-                        else if (args[nArg].equalsIgnoreCase("-r")) {
-                                if(!bCommConfigSet) {
-                                        commConfig = SimOptions.COMM_CONFIG.PULL;
-                                        bCommConfigSet = true;
+                        else if (arguments[i].equalsIgnoreCase("-r")) 
+                        {
+                                if(!commConfigSet) 
+                                {
+                                        commConfig = CommunicationConfig.PULL;
+                                        commConfigSet = true;
                                 }
                                 else {
                                         contProg = false;
                                 }
                         }
-                        else if (args[nArg].equalsIgnoreCase("-b")) {
-                                if(!bCommConfigSet) {
-                                        commConfig = SimOptions.COMM_CONFIG.BUFFER;
-                                        bCommConfigSet = true;
+                        else if (arguments[i].equalsIgnoreCase("-b")) 
+                        {
+                                if(!commConfigSet) {
+                                        commConfig = CommunicationConfig.BUFFER;
+                                        commConfigSet = true;
                                 }
                                 else {
                                         contProg = false;
                                 }
                         }
                 }
-                if(!bCommConfigSet) {
+                
+                if(!commConfigSet) {
                         contProg = false;
                 }
                 
-                if (contProg) {
-                        if(!bSimThread && !bPresThread) {
-                                opts.setThreadConfig(SimOptions.THREAD_CONFIG.NONE);
+                if (contProg) 
+                {
+                        if(!simulationThread && !presentationThread) {
+                                options.setThreadConfig(ThreadConfig.NONE);
                         }
-                        else if(!bSimThread && bPresThread) {
-                                opts.setThreadConfig(SimOptions.THREAD_CONFIG.PRES_ONLY);
+                        else if(!simulationThread && presentationThread) {
+                                options.setThreadConfig(ThreadConfig.PRESENTATIONONLY);
                         }
-                        else if(bSimThread && !bPresThread) {
-                                opts.setThreadConfig(SimOptions.THREAD_CONFIG.SIM_ONLY);
+                        else if(simulationThread && !presentationThread) {
+                                options.setThreadConfig(ThreadConfig.SIMULATIONONLY);
                         }
-                        else if(bSimThread && bPresThread) {
-                                opts.setThreadConfig(SimOptions.THREAD_CONFIG.SIM_AND_PRES);
+                        else if(simulationThread && presentationThread) {
+                                options.setThreadConfig(ThreadConfig.SIMULATIONANDPRESENTATION);
                         }
-                        opts.setCommConfig(commConfig);
+                        options.setCommConfig(commConfig);
 
-//                      new SimulationController().runSimulation(new TextOutput());
                 }
-                else {
-                        String usage = 
-                                "Usage:\n" +
-                                "\n" +
-                                "java " + "EarthSim" 
-                                        + " " + "[" + "-s" + "]"
-                                        + " " + "[" + "-p" + "]"
-                                        + " " + "[" + "-t OR -r OR -b" + "]";
-                        
-                        System.out.println(usage);
+                else 
+                {
+
+                        System.out.println("Usage:\n" + "\n" +  "java " + "EarthSim"  + " " + "[" + "-s" + "]" + " " + "[" + "-p" + "]" + " " + "[" + "-t OR -r OR -b" + "]");
                 }
                 
                 return contProg;

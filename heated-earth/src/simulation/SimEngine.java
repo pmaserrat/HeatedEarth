@@ -2,6 +2,7 @@ package simulation;
 
 import java.util.Calendar;
 
+import userControl.CommunicationConfig;
 import userControl.SimOptions;
 import presentation.Presentation;
 import sync.StatusBuffer;
@@ -134,9 +135,9 @@ public class SimEngine implements Runnable {
 				System.out.println(toString());
 			}
 
-			if (simOption.getCommConfig() == SimOptions.COMM_CONFIG.PUSH) {
+			if (simOption.getCommConfig() == CommunicationConfig.PUSH) {
 				Presentation.getInstance().setStatus(getStatus());
-			} else if (simOption.getCommConfig() == SimOptions.COMM_CONFIG.BUFFER) {
+			} else if (simOption.getCommConfig() == CommunicationConfig.BUFFER) {
 				StatusBuffer.getInstance().pushStatus(getStatus());
 			}
 

@@ -2,14 +2,8 @@ package userControl;
 
 import java.util.Observable;
 
-/*
- * Simulation Option: Singleton 
- * */
 public class SimOptions extends Observable {
-	
-	public enum COMM_CONFIG {PUSH,PULL,BUFFER};
-	public enum THREAD_CONFIG {NONE,SIM_ONLY,PRES_ONLY,SIM_AND_PRES};
-	
+		
 	// Provide some hardcoded defaults... I hate it but it's necessary
 	private boolean 	run 					= false;
 	private boolean 	resetOnStart 			= false;
@@ -18,8 +12,8 @@ public class SimOptions extends Observable {
 	private int			simulationDelay_ms		= 0;
 	private int 		visualizationRate 		= 2;
 	private int			visualizationDelay_ms	= 0;
-	private COMM_CONFIG	commConfig 				= COMM_CONFIG.BUFFER;
-	private THREAD_CONFIG threadConfig			= THREAD_CONFIG.NONE;
+	private CommunicationConfig	commConfig 				= CommunicationConfig.BUFFER;
+	private ThreadConfig threadConfig			= ThreadConfig.NONE;
 	private SimOptions(){};
 
 	private static SimOptions instance;
@@ -77,19 +71,19 @@ public class SimOptions extends Observable {
 		return resetOnStart;
 	}
 
-	public void setCommConfig(COMM_CONFIG commConfig) {
+	public void setCommConfig(CommunicationConfig commConfig) {
 		this.commConfig = commConfig;
 	}
 
-	public COMM_CONFIG getCommConfig() {
+	public CommunicationConfig getCommConfig() {
 		return commConfig;
 	}
 
-	public void setThreadConfig(THREAD_CONFIG threadConfig) {
+	public void setThreadConfig(ThreadConfig threadConfig) {
 		this.threadConfig = threadConfig;
 	}
 
-	public THREAD_CONFIG getThreadConfig() {
+	public ThreadConfig getThreadConfig() {
 		return threadConfig;
 	}
 
@@ -110,3 +104,7 @@ public class SimOptions extends Observable {
 	}
 
 }
+
+
+
+

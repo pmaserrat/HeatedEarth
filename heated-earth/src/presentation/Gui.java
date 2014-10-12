@@ -30,7 +30,9 @@ import javax.swing.text.PlainDocument;
 
 import presentation.earth.*;
 import simulation.SimStatus;
+import userControl.CommunicationConfig;
 import userControl.SimOptions;
+import userControl.ThreadConfig;
 
 class GuiConfig {
 	// Setup some dimensions for our GUI 
@@ -234,24 +236,24 @@ public class Gui extends JFrame implements ActionListener, ChangeListener {
 		
 		// Update the threading configuration options
 		if (threadUse_Sim.isSelected() && !threadUse_Pres.isSelected()) {
-			opts.setThreadConfig(SimOptions.THREAD_CONFIG.SIM_ONLY);
+			opts.setThreadConfig(ThreadConfig.SIMULATIONONLY);
 		}
 		else if (!threadUse_Sim.isSelected() && threadUse_Pres.isSelected()) {
-			opts.setThreadConfig(SimOptions.THREAD_CONFIG.PRES_ONLY);
+			opts.setThreadConfig(ThreadConfig.PRESENTATIONONLY);
 		}
 		else if (threadUse_Sim.isSelected() && threadUse_Pres.isSelected()) {
-			opts.setThreadConfig(SimOptions.THREAD_CONFIG.SIM_AND_PRES);
+			opts.setThreadConfig(ThreadConfig.SIMULATIONANDPRESENTATION);
 		}
 		
 		// Update the communication configuration options
 		if (comConfig_Pull.isSelected()) {
-			opts.setCommConfig(SimOptions.COMM_CONFIG.PULL);
+			opts.setCommConfig(CommunicationConfig.PULL);
 		}
 		else if (comConfig_Push.isSelected()) {
-			opts.setCommConfig(SimOptions.COMM_CONFIG.PUSH);
+			opts.setCommConfig(CommunicationConfig.PUSH);
 		}
 		else if (comConfig_Buff.isSelected()) {
-			opts.setCommConfig(SimOptions.COMM_CONFIG.BUFFER);
+			opts.setCommConfig(CommunicationConfig.BUFFER);
 		}
 	}
 
@@ -415,13 +417,13 @@ public class Gui extends JFrame implements ActionListener, ChangeListener {
 		tmpLabel.setPreferredSize(new Dimension(DIM_WIDTH_OPTIONS_LABELS,LABEL_HEIGHT));
 		threadUse_Sim = new JRadioButton("Sim Thread [-s]");
 		threadUse_Pres = new JRadioButton("Pres Thread [-p]");
-		if ( SimOptions.getInstance().getThreadConfig() == SimOptions.THREAD_CONFIG.SIM_ONLY ) {
+		if ( SimOptions.getInstance().getThreadConfig() == ThreadConfig.SIMULATIONONLY ) {
 			threadUse_Sim.setSelected(true);
 		}
-		else if ( SimOptions.getInstance().getThreadConfig() == SimOptions.THREAD_CONFIG.PRES_ONLY ) {
+		else if ( SimOptions.getInstance().getThreadConfig() == ThreadConfig.PRESENTATIONONLY ) {
 			threadUse_Pres.setSelected(true);
 		}
-		else if ( SimOptions.getInstance().getThreadConfig() == SimOptions.THREAD_CONFIG.SIM_AND_PRES ) {
+		else if ( SimOptions.getInstance().getThreadConfig() == ThreadConfig.SIMULATIONANDPRESENTATION ) {
 			threadUse_Sim.setSelected(true);
 			threadUse_Pres.setSelected(true);
 		}
@@ -434,13 +436,13 @@ public class Gui extends JFrame implements ActionListener, ChangeListener {
 		comConfig_Push = new JRadioButton("Push [-t]");
 		comConfig_Pull = new JRadioButton("Pull [-r]");
 		comConfig_Buff = new JRadioButton("Buffer [-b]");
-		if ( SimOptions.getInstance().getCommConfig() == SimOptions.COMM_CONFIG.PUSH ) {
+		if ( SimOptions.getInstance().getCommConfig() == CommunicationConfig.PUSH ) {
 			comConfig_Push.setSelected(true);
 		}
-		else if ( SimOptions.getInstance().getCommConfig() == SimOptions.COMM_CONFIG.PULL ) {
+		else if ( SimOptions.getInstance().getCommConfig() == CommunicationConfig.PULL ) {
 			comConfig_Pull.setSelected(true);
 		}
-		else if ( SimOptions.getInstance().getCommConfig() == SimOptions.COMM_CONFIG.BUFFER ) {
+		else if ( SimOptions.getInstance().getCommConfig() == CommunicationConfig.BUFFER ) {
 			comConfig_Buff.setSelected(true);
 		}
 		ButtonGroup group = new ButtonGroup();

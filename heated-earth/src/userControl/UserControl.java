@@ -60,8 +60,8 @@ public class UserControl implements Observer {
                 SimEngine.setKill(false);
                 SimEngine.setHold(false);
                 sim.initStatus();
-                if (opts.getThreadConfig() == SimOptions.THREAD_CONFIG.SIM_ONLY         ||
-                        opts.getThreadConfig() == SimOptions.THREAD_CONFIG.SIM_AND_PRES ) {
+                if (opts.getThreadConfig() == ThreadConfig.SIMULATIONONLY         ||
+                        opts.getThreadConfig() == ThreadConfig.SIMULATIONANDPRESENTATION ) {
                         // OK, create our simulation thread
                         simThread = new Thread(sim,"Sim Thread");
                 }
@@ -70,8 +70,8 @@ public class UserControl implements Observer {
                 Presentation pres = Presentation.getInstance();
                 Presentation.setKill(false);
                 Presentation.setHold(false);
-                if (opts.getThreadConfig() == SimOptions.THREAD_CONFIG.PRES_ONLY        ||
-                        opts.getThreadConfig() == SimOptions.THREAD_CONFIG.SIM_AND_PRES ) {
+                if (opts.getThreadConfig() == ThreadConfig.PRESENTATIONONLY        ||
+                        opts.getThreadConfig() == ThreadConfig.SIMULATIONANDPRESENTATION ) {
                         // OK, create our presentation thread
                         presThread = new Thread(pres,"Pres Thread");
                 }
