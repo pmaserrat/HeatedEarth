@@ -31,7 +31,7 @@ import javax.swing.text.PlainDocument;
 import presentation.earth.*;
 import simulation.SimStatus;
 import userControl.CommunicationConfig;
-import userControl.SimOptions;
+import userControl.SimulationOptions;
 import userControl.ThreadConfig;
 
 class GuiConfig {
@@ -149,8 +149,8 @@ public class Gui extends JFrame implements ActionListener, ChangeListener {
 			updateUserControls();
 
 			// Update the user controls for this simulation
-			SimOptions.getInstance().setRun(true);
-			SimOptions.getInstance().setResetOnStart(false);
+			SimulationOptions.getInstance().setRun(true);
+			SimulationOptions.getInstance().setResetOnStart(false);
 		}
 		else if (command.equals(GuiConfig.ACTION_STOP)) {
 			// Enable the Run button
@@ -164,7 +164,7 @@ public class Gui extends JFrame implements ActionListener, ChangeListener {
 
 			updateUserControls();
 			
-			SimOptions.getInstance().setRun(false);
+			SimulationOptions.getInstance().setRun(false);
 		}
 		else if (command.equals(GuiConfig.ACTION_RESTART)) {
 			// Users are only allowed to edit the options when the application
@@ -176,7 +176,7 @@ public class Gui extends JFrame implements ActionListener, ChangeListener {
 			restartButton.setEnabled(false);
 			
 			// Reset the earth grid
-			SimOptions.getInstance().setResetOnStart(true);
+			SimulationOptions.getInstance().setResetOnStart(true);
 			earthPanel.reset();
 
 			// Reset the simulation time
@@ -196,7 +196,7 @@ public class Gui extends JFrame implements ActionListener, ChangeListener {
 			// Update the position of the sun
 			earthPanel.moveSunPosition(
 					(float)(simRateEdit.getValue() % 1440) * 360 / 1440
-					* SimOptions.getInstance().getVisualizationRate()
+					* SimulationOptions.getInstance().getVisualizationRate()
 				);
 			
 			// Update the simulation time
@@ -209,8 +209,8 @@ public class Gui extends JFrame implements ActionListener, ChangeListener {
 			if(simStatus.isFinished()) {
 				setEnableAllUserOptions(true);
 				runButton.setEnabled(true);
-				SimOptions.getInstance().setRun(false);
-				SimOptions.getInstance().setResetOnStart(true);
+				SimulationOptions.getInstance().setRun(false);
+				SimulationOptions.getInstance().setResetOnStart(true);
 				stopButton.setEnabled(false);
 				restartButton.setEnabled(false);
 				try {
@@ -223,7 +223,7 @@ public class Gui extends JFrame implements ActionListener, ChangeListener {
 	
 	public void updateUserControls() {
 		// Get an instance of SimOptions
-		SimOptions opts = SimOptions.getInstance();
+		SimulationOptions opts = SimulationOptions.getInstance();
 		
 		// Update the options based on the user controls
 		opts.setGridSpacing(gridSpacingDegEdit.getAngle());
@@ -231,7 +231,7 @@ public class Gui extends JFrame implements ActionListener, ChangeListener {
 		opts.setVisualizationRate(visRateEdit.getValue());
 		
 		// Update the delay options
-		opts.setSimulationDelay_ms(simDelayEdit.getValue());
+		opts.setSimulationDelayMilliSeconds(simDelayEdit.getValue());
 //		opts.setVisualizationDelay_ms(visDelayEdit.getValue());
 		
 		// Update the threading configuration options
@@ -417,13 +417,13 @@ public class Gui extends JFrame implements ActionListener, ChangeListener {
 		tmpLabel.setPreferredSize(new Dimension(DIM_WIDTH_OPTIONS_LABELS,LABEL_HEIGHT));
 		threadUse_Sim = new JRadioButton("Sim Thread [-s]");
 		threadUse_Pres = new JRadioButton("Pres Thread [-p]");
-		if ( SimOptions.getInstance().getThreadConfig() == ThreadConfig.SIMULATIONONLY ) {
+		if ( SimulationOptions.getInstance().getThreadConfig() == ThreadConfig.SIMULATIONONLY ) {
 			threadUse_Sim.setSelected(true);
 		}
-		else if ( SimOptions.getInstance().getThreadConfig() == ThreadConfig.PRESENTATIONONLY ) {
+		else if ( SimulationOptions.getInstance().getThreadConfig() == ThreadConfig.PRESENTATIONONLY ) {
 			threadUse_Pres.setSelected(true);
 		}
-		else if ( SimOptions.getInstance().getThreadConfig() == ThreadConfig.SIMULATIONANDPRESENTATION ) {
+		else if ( SimulationOptions.getInstance().getThreadConfig() == ThreadConfig.SIMULATIONANDPRESENTATION ) {
 			threadUse_Sim.setSelected(true);
 			threadUse_Pres.setSelected(true);
 		}
@@ -436,13 +436,13 @@ public class Gui extends JFrame implements ActionListener, ChangeListener {
 		comConfig_Push = new JRadioButton("Push [-t]");
 		comConfig_Pull = new JRadioButton("Pull [-r]");
 		comConfig_Buff = new JRadioButton("Buffer [-b]");
-		if ( SimOptions.getInstance().getCommConfig() == CommunicationConfig.PUSH ) {
+		if ( SimulationOptions.getInstance().getCommConfig() == CommunicationConfig.PUSH ) {
 			comConfig_Push.setSelected(true);
 		}
-		else if ( SimOptions.getInstance().getCommConfig() == CommunicationConfig.PULL ) {
+		else if ( SimulationOptions.getInstance().getCommConfig() == CommunicationConfig.PULL ) {
 			comConfig_Pull.setSelected(true);
 		}
-		else if ( SimOptions.getInstance().getCommConfig() == CommunicationConfig.BUFFER ) {
+		else if ( SimulationOptions.getInstance().getCommConfig() == CommunicationConfig.BUFFER ) {
 			comConfig_Buff.setSelected(true);
 		}
 		ButtonGroup group = new ButtonGroup();

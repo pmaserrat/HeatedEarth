@@ -10,26 +10,26 @@ import simulation.SimEngine;
 
 public class UserControl implements Observer {
         
-        private Thread appThread        = null;
-        private Thread simThread        = null;
-        private Thread presThread       = null;
+        private Thread applicationThread = null;
+        private Thread simulationThread  = null;
+        private Thread presentationThread = null;
         
         private boolean paused = false;
         
-        public UserControl() {
-                // Observe the simulation options
-                SimOptions.getInstance().addObserver(this);
+        public UserControl() 
+        {
+        	SimulationOptions.getInstance().addObserver(this);
         }
         
         public void update(Observable observable, Object arg1) {
                 // The observable should be the simulation options, so cast it for clarity
-                SimOptions opts = (SimOptions) observable;
+                SimulationOptions options = (SimulationOptions) observable;
                 
                 // Check the status of the options and if we should run, then run
-                if (opts.getRun() == true) {
+                if (options.getRun() == true) {
                         
                         // If we are restarting, then we need to kill the thread before we go forward with a run
-                        if (opts.getResetOnStart() == true) {
+                        if (options.getResetOnStart() == true) {
                                 // Kill everything
                                 killAllThreads();
                                 paused = false;
@@ -45,46 +45,47 @@ public class UserControl implements Observer {
                                 setAllThreadHolds(false);
                         }
                 }
-                else if (opts.getRun() == false){
+                else if (options.getRun() == false){
                         // Just hold everything
                         setAllThreadHolds(true);
                         paused = true;
                 }
         }
         
-        private void startAllThreads() {
-                SimOptions opts = SimOptions.getInstance();
+        private void startAllThreads() 
+        {
+                SimulationOptions options = SimulationOptions.getInstance();
 
                 // Do we need a simulation thread?
-                SimEngine sim = SimEngine.getInstance();
+                SimEngine simulationEngine = SimEngine.getInstance();
                 SimEngine.setKill(false);
                 SimEngine.setHold(false);
-                sim.initStatus();
-                if (opts.getThreadConfig() == ThreadConfig.SIMULATIONONLY         ||
-                        opts.getThreadConfig() == ThreadConfig.SIMULATIONANDPRESENTATION ) {
+                simulationEngine.initStatus();
+                if (options.getThreadConfig() == ThreadConfig.SIMULATIONONLY         ||
+                        options.getThreadConfig() == ThreadConfig.SIMULATIONANDPRESENTATION ) {
                         // OK, create our simulation thread
-                        simThread = new Thread(sim,"Sim Thread");
+                        simulationThread = new Thread(simulationEngine,"Sim Thread");
                 }
                 
                 // Do we need a presentation thread?
                 Presentation pres = Presentation.getInstance();
                 Presentation.setKill(false);
                 Presentation.setHold(false);
-                if (opts.getThreadConfig() == ThreadConfig.PRESENTATIONONLY        ||
-                        opts.getThreadConfig() == ThreadConfig.SIMULATIONANDPRESENTATION ) {
+                if (options.getThreadConfig() == ThreadConfig.PRESENTATIONONLY        ||
+                        options.getThreadConfig() == ThreadConfig.SIMULATIONANDPRESENTATION ) {
                         // OK, create our presentation thread
-                        presThread = new Thread(pres,"Pres Thread");
+                        presentationThread = new Thread(pres,"Pres Thread");
                 }
 
                 // Setup the application thread based on the threads that currently exists / don't exist
-                if (simThread == null || presThread == null) {
-                        appThread = new Thread(new AppThread(simThread, presThread), "App Thread");
+                if (simulationThread == null || presentationThread == null) {
+                        applicationThread = new Thread(new AppThread(simulationThread, presentationThread), "App Thread");
                 }
 
                 // Run any necessary threads
-                if (simThread != null)  {simThread.start();}
-                if (presThread != null) {presThread.start();}
-                if (appThread != null)  {appThread.start();}
+                if (simulationThread != null)  {simulationThread.start();}
+                if (presentationThread != null) {presentationThread.start();}
+                if (applicationThread != null)  {applicationThread.start();}
                 
         }
 
@@ -114,17 +115,17 @@ public class UserControl implements Observer {
 //              }
                 
                 try {
-                        if (simThread != null)  {simThread.join();}
-                        if (presThread != null) {presThread.join();}
-                        if (appThread != null)  {appThread.join();}
+                        if (simulationThread != null)  {simulationThread.join();}
+                        if (presentationThread != null) {presentationThread.join();}
+                        if (applicationThread != null)  {applicationThread.join();}
                 } catch (InterruptedException e) {
                          e.printStackTrace();
                 }
                 
                 // All threads are dead... return them for re-use
-                simThread = null;
-                presThread = null;
-                appThread = null;
+                simulationThread = null;
+                presentationThread = null;
+                applicationThread = null;
                 
                 // Also kill classes
                 SimEngine.destroy();
@@ -143,36 +144,37 @@ class AppThread implements Runnable {
         }
         public static void kill() {kill = true;}
         
-        private Thread simThread = null;
-        private Thread presThread = null;
+        private Thread simulationThread = null;
+        private Thread presentationThread = null;
         
         public AppThread(Thread simThread_in, Thread presThread_in) {
                 kill = false; 
                 hold = false;
-                simThread = simThread_in;
-                presThread = presThread_in;
+                simulationThread = simThread_in;
+                presentationThread = presThread_in;
         }
         
         public void run() {
         
-                if (SimConstant.DEBUG) {
+                if (SimConstant.DEBUG) 
+                {
                         System.out.println("Enterring Application Thread!");
                 }
                 
                 // Get the necessary instances of simulation and presentation
-                SimEngine sim = SimEngine.getInstance();
-                Presentation pres = Presentation.getInstance();
+                SimEngine simulation = SimEngine.getInstance();
+                Presentation presentation = Presentation.getInstance();
                 
                 // run the main application loop... if we have to
-                boolean simFinished = false, presFinished = false;      // Assume that we're already done!
-                while ( (simThread == null || presThread == null) 
-                                 && (!simFinished || !presFinished) 
+                boolean simulationFinished = false, presentationFinished = false;      // Assume that we're already done!
+                while ( (simulationThread == null || presentationThread == null) 
+                                 && (!simulationFinished || !presentationFinished) 
                                  && !kill ) {
                         
                         // Take a simulation step only if it's not running in a thread
                         if (!hold) {
-                                if (simThread == null) {simFinished = !sim.runStep();} else {simFinished = true;}
-                                if (presThread == null) {presFinished = !pres.updateSimData();} else {presFinished = true;}
+                                if (simulationThread == null) {simulationFinished = !simulation.runStep();} else {simulationFinished = true;}
+                                if (presentationThread == null) {presentationFinished = !presentation.updateSimData();} else {presentationFinished = true;}
                         }
                         else {
                                 // wait a minute so that the computer doesn't slow down too much

@@ -2,27 +2,30 @@ package userControl;
 
 import java.util.Observable;
 
-public class SimOptions extends Observable {
-		
-	// Provide some hardcoded defaults... I hate it but it's necessary
-	private boolean 	run 					= false;
-	private boolean 	resetOnStart 			= false;
+public class SimulationOptions extends Observable {
+	
+	// Default options
 	private int 		gridSpacing 			= 15;
 	private int 		simulationRate 			= 1;
-	private int			simulationDelay_ms		= 0;
+	private int			simulationDelayMilliSeconds	= 0;
 	private int 		visualizationRate 		= 2;
-	private int			visualizationDelay_ms	= 0;
-	private CommunicationConfig	commConfig 				= CommunicationConfig.BUFFER;
+	private boolean 	run 					= false;
+	private boolean 	resetOnStart 			= false;
+	private int			visualizationDelayMilliSeconds	= 0;
+	private CommunicationConfig	commConfig 		= CommunicationConfig.BUFFER;
 	private ThreadConfig threadConfig			= ThreadConfig.NONE;
-	private SimOptions(){};
+	private SimulationOptions(){};
 
-	private static SimOptions instance;
-	public static SimOptions getInstance() {
-		if(instance == null) {
-			instance = new SimOptions();
+	private static SimulationOptions instance;
+	public static SimulationOptions getInstance() 
+	{
+		if(instance == null) 
+		{
+			instance = new SimulationOptions();
 		}
 		return instance;
 	}
+	
 	public static void destroy() {
 		if(instance != null) {
 			instance = null;
@@ -34,7 +37,7 @@ public class SimOptions extends Observable {
 	}
 	
 	public int getGridSpacing() {
-		return gridSpacing;
+		return this.gridSpacing;
 	}
 
 	public void setSimulationRate(int simulationRate) {
@@ -42,7 +45,7 @@ public class SimOptions extends Observable {
 	}
 	
 	public int getSimulationRate() {
-		return simulationRate;
+		return this.simulationRate;
 	}
 
 	public void setVisualizationRate(int visualizationRate) {
@@ -50,17 +53,18 @@ public class SimOptions extends Observable {
 	}
 	
 	public int getVisualizationRate() {
-		return visualizationRate;
+		return this.visualizationRate;
 	}
 
-	public void setRun(boolean run) {
+	public void setRun(boolean run) 
+	{
 		this.run = run;
 		this.setChanged();
 		this.notifyObservers();
 	}
 	
 	public boolean getRun() {
-		return run;
+		return this.run;
 	}
 
 	public void setResetOnStart(boolean resetOnStart) {
@@ -68,7 +72,7 @@ public class SimOptions extends Observable {
 	}
 	
 	public boolean getResetOnStart() {
-		return resetOnStart;
+		return this.resetOnStart;
 	}
 
 	public void setCommConfig(CommunicationConfig commConfig) {
@@ -76,7 +80,7 @@ public class SimOptions extends Observable {
 	}
 
 	public CommunicationConfig getCommConfig() {
-		return commConfig;
+		return this.commConfig;
 	}
 
 	public void setThreadConfig(ThreadConfig threadConfig) {
@@ -84,23 +88,23 @@ public class SimOptions extends Observable {
 	}
 
 	public ThreadConfig getThreadConfig() {
-		return threadConfig;
+		return this.threadConfig;
 	}
 
-	public void setSimulationDelay_ms(int simulationDelay_ms) {
-		this.simulationDelay_ms = simulationDelay_ms;
+	public void setSimulationDelayMilliSeconds(int simulationDelay) {
+		this.simulationDelayMilliSeconds = simulationDelay;
 	}
 
 	public int getSimulationDelay_ms() {
-		return simulationDelay_ms;
+		return this.simulationDelayMilliSeconds;
 	}
 
-	public void setVisualizationDelay_ms(int visualizationDelay_ms) {
-		this.visualizationDelay_ms = visualizationDelay_ms;
+	public void setVisualizationDelayMilliSeconds(int visualizationDelay) {
+		this.visualizationDelayMilliSeconds = visualizationDelay;
 	}
 
-	public int getVisualizationDelay_ms() {
-		return visualizationDelay_ms;
+	public int getVisualizationDelayMilliSeconds() {
+		return this.visualizationDelayMilliSeconds;
 	}
 
 }
