@@ -126,17 +126,13 @@ public class SimEngine implements Runnable {
 				rotationAngle_deg += 360;
 			}
 
+			rotationAngle_deg=rotationAngle_deg+ 180;
 			diffGrid = simKernel.step(grid, gridTmp, rotationAngle_deg,
 					simulationRate,  simOption.getGridSpacing());
 
 			swapGrid();
 
-			 simulationTime += simOption.getSimulationRate();
-             rotationAngle_deg = -(float)(simulationTime % 1440) * 360 / 1440;
-             if(rotationAngle_deg > 180) {
-                     rotationAngle_deg -= 360;
-             }
-			
+						
 			if (SimConstant.DEBUG) {
 				System.out.println(toString());
 			}

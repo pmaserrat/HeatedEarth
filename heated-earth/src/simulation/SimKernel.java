@@ -19,7 +19,9 @@ public class SimKernel {
 		//float height = (180 / gridSpacing);
 
 		int sunPosition = (int) (rotationAngle_deg == 0 ? rotationAngle_deg
-				: (width * (rotationAngle_deg / 360) + (width / 2) % width));
+				: 360-(width * (rotationAngle_deg / 360) + (width / 2) % width));
+		
+		
 		float tempSunEffect = 0;
 		float tempCooling = 0;
 		float tempDiffusion = 0;
