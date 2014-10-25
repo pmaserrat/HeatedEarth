@@ -11,20 +11,19 @@ import javax.imageio.ImageIO;
  * @author Andrew Bernard
  */
 public class EarthImage {
-        private URL imgURL = this.getClass().getResource("earth-800x400.jpg");
-        
-        EarthImage() {
-                imgURL = this.getClass().getResource("earth-800x400.jpg");
-        }
-        
-        BufferedImage getBufferedImage() {
-                BufferedImage earthImage = null;
-                try {
-      earthImage = ImageIO.read(imgURL);
-    }
-    catch (IOException e) {
-      e.printStackTrace();
-    }
-    return earthImage;
-        }
+	private URL imgURL = this.getClass().getResource("earth-800x400.jpg");
+
+	EarthImage() {
+		imgURL = this.getClass().getResource("earth-800x400.jpg");
+	}
+
+	BufferedImage getBufferedImage() {
+		BufferedImage earthImage = null;
+		try {
+			earthImage = ImageIO.read(imgURL);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return earthImage;
+	}
 }

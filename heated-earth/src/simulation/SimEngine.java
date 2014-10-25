@@ -126,13 +126,12 @@ public class SimEngine implements Runnable {
 				rotationAngle_deg += 360;
 			}
 
-			rotationAngle_deg=rotationAngle_deg+ 180;
+			rotationAngle_deg = rotationAngle_deg + 180;
 			diffGrid = simKernel.step(grid, gridTmp, rotationAngle_deg,
-					simulationRate,  simOption.getGridSpacing());
+					simulationRate, simOption.getGridSpacing());
 
 			swapGrid();
 
-						
 			if (SimConstant.DEBUG) {
 				System.out.println(toString());
 			}

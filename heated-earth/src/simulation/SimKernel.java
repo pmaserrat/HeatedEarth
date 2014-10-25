@@ -1,27 +1,23 @@
 package simulation;
 
-import userControl.SimulationOptions;
-
 public class SimKernel {
 
 	public SimKernel() {
 
 	}
 
-
-
 	public float step(Grid source, Grid target, float rotationAngle_deg,
 			int simulationRate, int gridSpacing) {
 		// Compute lattice point temperature as average of neighbors
 		float maxDiff = 0;
-		
+
 		float width = (2 * 180 / gridSpacing); // rows
-		//float height = (180 / gridSpacing);
+		// float height = (180 / gridSpacing);
 
 		int sunPosition = (int) (rotationAngle_deg == 0 ? rotationAngle_deg
-				: 360-(width * (rotationAngle_deg / 360) + (width / 2) % width));
-		
-		
+				: 360 - (width * (rotationAngle_deg / 360) + (width / 2)
+						% width));
+
 		float tempSunEffect = 0;
 		float tempCooling = 0;
 		float tempDiffusion = 0;
@@ -35,37 +31,34 @@ public class SimKernel {
 			sourceCell = source.getCurrent();
 			targetCell = target.getCurrent();
 
-			tempDiffusion=calcTempDiffusion(sourceCell);
-			tempSunEffect=calTsun(sunPosition, sourceCell, gridSpacing);
-			tempCooling=calTcool(sourceCell, gridSpacing);
-		
-			newTemp =  tempCooling+tempSunEffect+tempDiffusion;
-		
-//            System.out.println("tempCooling"+ tempCooling);
-//            System.out.println("tempSunEffect"+ tempSunEffect);
-//            System.out.println("tempDiffusion"+ tempDiffusion);
-//            System.out.println("newTemp" + newTemp);
-            
-            //float temp = 
-		
-        	targetCell.setTemperature(newTemp);
-        	
-        	//System.out.println("targetCell.getTemperature()" + targetCell.getTemperature());
-             
-        	
+			tempDiffusion = calcTempDiffusion(sourceCell);
+			tempSunEffect = calTsun(sunPosition, sourceCell, gridSpacing);
+			tempCooling = calTcool(sourceCell, gridSpacing);
+
+			newTemp = tempCooling + tempSunEffect + tempDiffusion;
+
+			// System.out.println("tempCooling"+ tempCooling);
+			// System.out.println("tempSunEffect"+ tempSunEffect);
+			// System.out.println("tempDiffusion"+ tempDiffusion);
+			// System.out.println("newTemp" + newTemp);
+
+			// float temp =
+
+			targetCell.setTemperature(newTemp);
+
+			// System.out.println("targetCell.getTemperature()" +
+			// targetCell.getTemperature());
+
 			absDiffTemp = Math.abs(sourceCell.getTemperature()
 					- targetCell.getTemperature());
 			if (absDiffTemp > maxDiff) {
 				maxDiff = absDiffTemp;
 			}
 
-			
 		} while (source.next() && target.next());
 
 		return maxDiff;
 	}
-
-	
 
 	private float calTcool(Cell sourceCel, int gridSpacing) {
 
@@ -82,15 +75,12 @@ public class SimKernel {
 		return -1 * beta * tempfactor * sourceCel.getTemperature();
 	}
 
-	
-
 	public static float calculateTemperatureDueToSun(float latitude,
 			float longitude) {
 
 		return (float) (288 * Math.cos(latitude) * Math.cos(longitude));
 
 	}
-
 
 	private float calTsun(int sunPosition, Cell cell, int gs) {
 		int sunLongitude = getSunLocationOnEarth(sunPosition, gs);
@@ -111,8 +101,6 @@ public class SimKernel {
 		return j < (cols / 2) ? -(j + 1) * gs : (360) - (j + 1) * gs;
 	}
 
-
-
 	private float calcTempDiffusion(Cell sourceCell) {
 		// required for diffusion effect
 		float cellPerimeter;
@@ -131,9 +119,9 @@ public class SimKernel {
 				* (sourceCell.getLeft().getTemperature()) + pN
 				* (sourceCell.getTop().getTemperature()) + pS
 				* (sourceCell.getBottom().getTemperature()));
-		
+
 		return tempDiffusion;
-		
+
 	}
 
 }

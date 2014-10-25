@@ -3,39 +3,40 @@ package userControl;
 import java.util.Observable;
 
 public class SimulationOptions extends Observable {
-	
+
 	// Default options
-	private int 		gridSpacing 			= 15;
-	private int 		simulationRate 			= 1;
-	private int			simulationDelayMilliSeconds	= 0;
-	private int 		visualizationRate 		= 2;
-	private boolean 	run 					= false;
-	private boolean 	resetOnStart 			= false;
-	private int			visualizationDelayMilliSeconds	= 0;
-	private CommunicationConfig	commConfig 		= CommunicationConfig.BUFFER;
-	private ThreadConfig threadConfig			= ThreadConfig.NONE;
-	private SimulationOptions(){};
+	private int gridSpacing = 15;
+	private int simulationRate = 1;
+	private int simulationDelayMilliSeconds = 0;
+	private int visualizationRate = 2;
+	private boolean run = false;
+	private boolean resetOnStart = false;
+	private int visualizationDelayMilliSeconds = 0;
+	private CommunicationConfig commConfig = CommunicationConfig.BUFFER;
+	private ThreadConfig threadConfig = ThreadConfig.NONE;
+
+	private SimulationOptions() {
+	};
 
 	private static SimulationOptions instance;
-	public static SimulationOptions getInstance() 
-	{
-		if(instance == null) 
-		{
+
+	public static SimulationOptions getInstance() {
+		if (instance == null) {
 			instance = new SimulationOptions();
 		}
 		return instance;
 	}
-	
+
 	public static void destroy() {
-		if(instance != null) {
+		if (instance != null) {
 			instance = null;
 		}
 	}
-	
+
 	public void setGridSpacing(int gridSpacing) {
 		this.gridSpacing = gridSpacing;
 	}
-	
+
 	public int getGridSpacing() {
 		return this.gridSpacing;
 	}
@@ -43,7 +44,7 @@ public class SimulationOptions extends Observable {
 	public void setSimulationRate(int simulationRate) {
 		this.simulationRate = simulationRate;
 	}
-	
+
 	public int getSimulationRate() {
 		return this.simulationRate;
 	}
@@ -51,18 +52,17 @@ public class SimulationOptions extends Observable {
 	public void setVisualizationRate(int visualizationRate) {
 		this.visualizationRate = visualizationRate;
 	}
-	
+
 	public int getVisualizationRate() {
 		return this.visualizationRate;
 	}
 
-	public void setRun(boolean run) 
-	{
+	public void setRun(boolean run) {
 		this.run = run;
 		this.setChanged();
 		this.notifyObservers();
 	}
-	
+
 	public boolean getRun() {
 		return this.run;
 	}
@@ -70,7 +70,7 @@ public class SimulationOptions extends Observable {
 	public void setResetOnStart(boolean resetOnStart) {
 		this.resetOnStart = resetOnStart;
 	}
-	
+
 	public boolean getResetOnStart() {
 		return this.resetOnStart;
 	}
@@ -108,7 +108,3 @@ public class SimulationOptions extends Observable {
 	}
 
 }
-
-
-
-
